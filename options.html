@@ -1,0 +1,117 @@
+<html>
+<head>
+  <meta charset="utf-8"> 
+  <title>OnError Extension Options</title>
+  <!-- <link href="icon16.ico" rel="shortcut icon"> -->
+  <style type='text/css'>
+   html, body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-family: lucida, tahoma, arial, verdana, sans-serif;
+   }
+   #header {
+    background: -webkit-gradient(linear, left top, left bottom, from(#28e), to(#cde));
+    border-color: #ddd;
+    border-style: solid;
+    border-width: 0 1px 1px 1px;
+    padding: 10px;
+    text-shadow: 0 1px 0 #fff;
+   }
+   #header h1 {
+    height: 80px;
+    background: url(ok256.png) 0 3px no-repeat;
+    padding-top:   50px;
+    padding-left: 280px;
+   }
+   #body {
+    padding: 10px;
+   }
+   #about {
+     padding-top: 10px;
+     width: 75%;
+     font-size: 16pt;
+   }
+   #author {
+     padding-top: 10px;
+     font-size: 12pt;
+   }
+   #options {
+    border: solid #ddd 1px;
+    margin-top: 30px;
+    padding: 10px;
+    background-color: #edece1;
+   }
+   .labelExtra {
+     font-size: 10pt;
+     font-color: #aaa;
+     font-style: italic;
+     width: 50%;
+     margin-left: 25px;
+   }
+   #status {
+     margin-top: 30px;
+     font-weight: bold;
+     font-size: 14pt;
+     color: #ab280e;
+   }
+  </style>
+
+</head>
+
+<body onload="restore_options()">
+ 
+<div id="header"> 
+    <h1>JsError Options</h1> 
+</div> 
+
+<div id="body"> 
+  <div id='about'>
+    <p>JsError is a minimal extension to flag errors in a page (typically in the javascript) without the need to
+    open the developer tools (which may trigger breakpoijnts and the like) within Google Chrome™.</p>
+
+    <p>When developing in Chrome, the Developer Tools are essential -  sometimes you have them closed (to avoid
+    triggering all your breakpoints for example), but it would still be nice to know about Javascript errors (cf
+    Firebug in FireFox).</p>
+
+    <p>So that's what this extension does.. it catches Javascript errors (this wasn't possible before Chrome 10)
+    and turns the toolbar button red if there have been errors in the current tab, and displays the error count too.
+    If you click the button then a drop down shows the errors and lets you clear them if you want. (Yes, it would be nice
+    if this could open the console and jump to the errors, but the Chrome extension API doesn't include such features
+    AFAIK).</p>
+
+    <p>The number overlaid on the button is the error count - it seems that Chrome silently clears this text
+    on some user actions but the icon remains, and the popup still records errors until you clear the list or reload
+    the tab.</p>
+
+    <p><b>Note:</b> this only catches javascript errors in the script for your page - it won't report errors such as
+    the failure to load a image, and it won't report errors triggered by commands you type at the javascript console
+    itself (they're evaluated elsewhere, not in your normal context), but it <i>will</i> report errors while the
+    developer tools console is open (eg while you're debugging).</p>
+
+    <p>Oh, and I know the icon above is clipped because it's too big - happened by accident and I sort of liked it...</p>
+  </div>
+
+  <div id='options'>
+    <h1>User options</h1>
+    <div id="controls"> 
+      <p>No options so far... maybe I should let you truncate the lists, or disable for certain tabs, or...</p> 
+    </div>
+  
+  </div>
+
+  <div id='author'>
+    <p>Written by Tim Meadowcroft -- <a target='_blank' href='http://schmerg.com'>http://schmerg.com</a></p>
+    <p>The Chrome Web Store requires a logo as well as a toolbar button, so I'm grateful to
+      newmooon for the icons which are taken from the
+      <a target='_blank' href="http://code.google.com/p/ultimate-gnome/">Ultimate Gnome icon theme</a>.</p>
+  </div>
+
+</div>
+
+<div id="footer"> 
+</div> 
+
+</body>
+</html>

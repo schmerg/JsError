@@ -1,0 +1,124 @@
+<html>
+<head>
+  <meta charset="utf-8"> 
+  <title>OnError popup</title>
+  <!-- <link href="icon16.ico" rel="shortcut icon">   from(#fff555), to(#fbde3a)) -->
+  <!-- from(#55ccff), to(#1188aa)); -->
+ 
+  <style type='text/css'>
+   html, body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-family: lucida, tahoma, arial, verdana, sans-serif;
+    font-size: 12pt;
+    color: black;
+    min-width: 300px; max-width: 600px;
+   }
+   #header {
+    background: -webkit-gradient(linear, left top, left bottom, from(#28e), to(#cde));
+    border-color: #ddd;
+    border-style: solid;
+    border-width: 0 1px 1px 1px;
+    padding: 2px;
+    height: 40px;
+   }
+   #header #hcontent {
+    padding-left: 38px;
+   }
+   #header .contentOk {
+    background: url(ok32.png) 1px 5px no-repeat;
+   }
+   #header .contentErr {
+    background: url(err32.png) 1px 5px no-repeat;
+   }
+   #header title {
+    font-size: 14pt;
+    padding-top: 0px;
+   }
+
+   #body {
+    min-height: 30px;
+    max-height: 300px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding: 0px;
+    font-family: monospace;
+    white-space: pre;
+    font-size: 10pt;
+   }
+   .oneError {
+     border-bottom: 1px dotted #ddd;
+     margin-bottom: 3px;
+     padding-right:  20px; /* save space for the scrollbar */
+   }
+   .oneError:hover {
+     color: blue;
+     background-color: #ffffcc; /*#f9edc5;*/
+   }
+   .oneError .etype {
+     color: red;
+   }
+   .oneError .eline {
+     color: #444;
+   }
+  </style>
+
+<script type="text/javascript">
+
+
+function onload() {
+  // called when the popup appears (ie the page is reloaded on each popup)
+  // ask chrome for the current tab, pull the list of errors from our background page,
+  // and populate the popup
+  var setT = function(tab) {
+    chrome.extension.sendRequest({rtype: "get", tabid: tab.id }, function(response) {
+      var head = document.getElementById("hcontent"),
+          body = document.getElementById("body");
+
+      document.getElementById("numErr").innerHTML = Number(response.errors.length);
+
+      if (response.errors.length === 0) {
+        head.setAttribute("class", "contentOk");
+        body.innerHTML = "No errors...";
+      }
+      else {
+        head.setAttribute("class", "contentErr");
+        body.innerHTML = "";
+        for (var i = 0; i < response.errors.length; i++) {
+          body.innerHTML += "<div class='oneError'>"+response.errors[i]+"</div>";
+        }
+      }
+    });
+  };
+  chrome.tabs.getSelected(undefined, setT);
+}
+
+function clearErrs() {
+  // let the user clear the list for the current tab
+  chrome.tabs.getSelected(undefined, function(tab) {
+      chrome.extension.sendRequest({rtype: "clear", tabid: tab.id }, function(response) {
+         onload();
+      });
+  });
+}
+
+</script>
+
+</head>
+
+<body onload="onload()">
+ 
+<div id="header"> 
+  <div id='hcontent'>
+    <div id='title'>JS Console Error Report</div> 
+    <div id='eCount'><span id='numErr'>0</span> errors - <a href='#' onclick='clearErrs()'>Clear</a></div>
+  </div>
+</div> 
+<div id="body"> 
+  No errors
+</div>
+
+</body>
+</html>

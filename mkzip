@@ -1,0 +1,2 @@
+#!/bin/bash
+zip JsError_1_0.zip manifest.json *.html ok*.png err*.png *.js

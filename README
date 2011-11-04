@@ -1,0 +1,42 @@
+This is the source for the JsError extension for Google Chrome as
+available to install at
+
+  https://chrome.google.com/webstore/detail/nnplccbllaclkbbmoldiamkhgohelbjh
+
+As you'll see, this is minimal extension but I've published the source
+so people can seea working extension with not much code, but a toolbar
+button, options, the manifest files etc
+
+I made the zip files for each version using the little mkzip one-liner
+and include them here as that's how you deploy projects to the Chrome
+Web Store
+
+The icons are sourced from the excellent
+  http://code.google.com/p/ultimate-gnome/
+and are used subject to the  license there
+
+The icons in that project are made available under the GPLv2 license
+so I'm going to likewise say
+
+  This work is published under a GPL v2 license
+
+There's so little code it might seem daft to consider the license, but
+I appreciate the effort newmooon has put into the icons so it's mostly
+to protect his work.
+
+    Copyright (C) 2011  Tim Meadowcroft
+
+    This file is part of ForceReload.
+
+    ForceReload is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 2 of the License, or
+    (at your option) any later version.
+
+    ForceReload is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with ForceReload.  If not, see <http://www.gnu.org/licenses/>.

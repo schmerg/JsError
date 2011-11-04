@@ -1,0 +1,25 @@
+{
+  "name": "JsError",
+  "version": "1.0",
+  "description": "Small extension for developers that flags javascript errors without the need to open the Developer Tools",
+  "homepage_url": "http://schmerg.com",
+  "icons": {
+      "128": "ok128.png",
+      "256": "ok256.png",
+      "32":  "ok32.png",
+      "16":  "ok16.png"
+  },
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "minimum_chrome_version": "10.0.648.133",
+  "permissions": [
+    "tabs"
+  ],
+  "background_page": "background.html",
+  "content_scripts": [{
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["onerror.js"]
+  }],
+  "options_page": "options.html"
+}

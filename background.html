@@ -1,0 +1,105 @@
+<html>
+<head>
+<script>
+//----------------------------------------------------------------------
+// JsError extension for Google Chrome
+// Under Firefox and other browsers, a developer can have a visual indicator of
+// errors without having to open the developer console - this provides the same
+// for Chrome
+//----------------------------------------------------------------------
+// Author: Tim Meadowcroft -- http://schmerg.com -- 2011
+//----------------------------------------------------------------------
+
+// keep a hash of errors per tabid
+var tabErrors = {
+};
+
+// apply all properties of src to tgt
+var applyObj = function (tgt,src) {
+  if (tgt && src && typeof src=="object") {
+    for (var k in src){
+      tgt[k] = src[k];
+    }
+  }
+  return tgt;
+};
+
+// Slight variation of the String.prototype.supplant function from Douglas Crockford's Remedial JavaScript
+var supplant = function (str, opts, defval) {
+    return str.replace(/\{([^{}]*)\}/g, function (s, m) {
+        var r = opts[m];
+        if (typeof r === 'string' || typeof r === 'number') {
+            return r;
+        }
+        if (typeof defval === 'string' || typeof defvalr === 'number') {
+            return defval;
+        }
+        return m;
+    });
+};
+
+// set the toolbar button for this tab and this err
+var setCtrls = function(tabid, err) {
+    var emsg = err && supplant("<span class='etype'>{rtype}:</span> <span class='emsg'>{msg}</span>\n"+
+                        "<span class='eurl'>{url}</span> :<span class='eline'>{line}</span>", err, ""),
+        errcount = err ? 1 : 0,
+        bOpt = { };
+        
+    if (tabid) {
+       bOpt.tabId = tabid;
+       if (err) {
+           errcount = tabErrors[tabid].push(emsg);
+       }
+    }
+
+    chrome.browserAction.setIcon(applyObj({
+      path: err ? "err16.png" : "ok16.png"
+    }, bOpt));
+
+    chrome.browserAction.setTitle(applyObj({
+      title: err ? errcount+" error(s): "+err.msg : "No errors"
+    }, bOpt));
+
+    chrome.browserAction.setBadgeText(applyObj({
+      text: (tabid && tabErrors[tabid] && tabErrors[tabid].length) ? (""+tabErrors[tabid].length) : ""
+    }, bOpt));
+};
+
+// We've inserted a small listener for the error event into each page
+// so we record a new error when we're called, and the popup sends a "get"
+// request to ask for the errors for a tab
+chrome.extension.onRequest.addListener(function(r, sender, sendResponse) {
+  var tabid = sender.tab ? sender.tab.id : r.tabid;
+  if (r.rtype && tabid) {
+    if (r.rtype === "error") {
+      tabErrors[tabid] = tabErrors[tabid] || [];
+      setCtrls(tabid, r);
+      if (sendResponse) {
+        sendResponse({});
+      }
+    }
+    else if (r.rtype  === "clear") {
+      tabErrors[tabid] = [];
+      setCtrls(tabid);
+      if (sendResponse) {
+        sendResponse({});
+      }
+    }
+    else if (r.rtype  === "get") {
+      if (sendResponse) {
+        sendResponse({ errors: tabErrors[tabid] || [] });
+      }
+    }
+  }
+});
+
+// Be a good boy and clean up when tabs are removed
+chrome.tabs.onRemoved.addListener(function(tabid, removeInfo){
+  delete tabErrors[tabid];
+});
+
+console.log("Background.html for JsError loaded"); 
+
+</script>
+</head>
+</html>
